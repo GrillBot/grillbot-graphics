@@ -51,7 +51,8 @@ const setLabel = (config: ChartConfiguration, label?: Label) => {
         align: label.align,
         fullSize: true,
         font: {
-            size: label.size
+            size: label.size,
+            weight: label.weight
         },
         color: label.color
     };

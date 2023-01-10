@@ -14,6 +14,7 @@ export const validators = [
     body('data.topLabel.align').optional().isString(),
     body('data.topLabel.size').optional().isInt().customSanitizer(val => parseInt(val, 10)),
     body('data.topLabel.color').optional().isString(),
+    body('data.topLabel.weight').optional().isString(),
 
     body('data.labels').optional().isArray(),
     body('data.datasets').exists().isArray(),

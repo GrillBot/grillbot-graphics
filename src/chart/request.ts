@@ -14,6 +14,7 @@ export interface Label {
     align: 'start' | 'end' | 'center';
     size: number;
     color: string;
+    weight: string;
 }
 
 export interface ChartData {
