@@ -16,10 +16,11 @@ export const validators = [
     body('data.topLabel.color').optional().isString(),
     body('data.topLabel.weight').optional().isString(),
 
-    body('data.labels').optional().isArray(),
     body('data.datasets').exists().isArray(),
     body('data.datasets.*.label').exists().isString(),
     body('data.datasets.*.data').exists().isArray(),
+    body('data.datasets.*.data.*.label').exists().isString(),
+    body('data.datasets.*.data.*.value').optional().customSanitizer(val => val != null ? parseInt(val, 10) : null),
     body('data.datasets.*.color').optional().isString(),
     body('data.datasets.*.width').optional().isInt().customSanitizer(val => parseInt(val, 10))
 ];

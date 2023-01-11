@@ -17,17 +17,20 @@ export interface Label {
     weight: string;
 }
 
-export interface ChartData {
-    topLabel?: Label;
-    labels: string[];
-    datasets: Dataset[];
+export interface DataPoint {
+    label: string;
+    value?: number;
 }
 
 export interface Dataset {
     label: string;
-    data: number[];
+    data: DataPoint[];
     color?: string;
     width?: number;
+}
+export interface ChartData {
+    topLabel?: Label;
+    datasets: Dataset[];
 }
 
 export interface RequestData {

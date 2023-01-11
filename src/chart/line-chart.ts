@@ -4,10 +4,9 @@ import { ChartConfiguration } from "chart.js";
 
 export const renderLineChart = (request: RequestData): Promise<Buffer> => {
     const data = {
-        labels: request.data.labels,
         datasets: request.data.datasets.map(o => ({
             label: o.label,
-            data: o.data,
+            data: o.data.map(o => ({x: o.label, y: o.value})),
             borderColor: o.color ?? 'black',
             borderWidth: o.width ?? 1
         }))
