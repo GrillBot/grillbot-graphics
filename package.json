@@ -4,7 +4,7 @@
   "description": "Graphics microservice for GrillBot",
   "main": "dist/index.js",
   "scripts": {
-    "build": "tsc --build --clean && tsc --build",
+    "build": "tsc --build --clean && tsc --build && copyfiles -u 1 src/**/*.png dist/src/",
     "watch": "tsc --build --clean && copyfiles -u 1 src/**/*.png dist/src/ && tsc --watch",
     "start": "nodemon dist/index.js"
   },
