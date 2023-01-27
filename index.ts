@@ -7,7 +7,7 @@ import * as common from './src/common';
 import * as image from './src/images';
 
 const app = express();
-app.use(express.json())
+app.use(express.json({ limit: '100mb' }))
 app.use(loggerMiddleware);
 app.use(actuator({}));
 app.use(common.requestsCounter);
