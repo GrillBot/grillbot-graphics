@@ -12,10 +12,10 @@ app.use(loggerMiddleware);
 app.use(actuator({}));
 app.use(common.requestsCounter);
 
-app.post('/chart', common.validate(chart.validators), (request, response, next) => new common.RequestProcessing(request, response, next).execute(chart.onRequest));
+app.post('/chart', common.validate(chart.validators), (req, res, next) => new common.RequestProcessing(req, res, next).execute(chart.onRequest));
 app.get('/stats', common.statsEndpoint);
-app.post('/image/without-accident', common.validate(image.withoutAccident.validators),
-    (request, response, next) => new common.RequestProcessing(request, response, next).execute(image.withoutAccident.onRequest));
+app.post('/image/without-accident', common.validate(image.withoutAccident.validators), (req, res, next) => new common.RequestProcessing(req, res, next).execute(image.withoutAccident.onRequest));
+app.post('/image/points', common.validate(image.points.validators), (req, res, next) => new common.RequestProcessing(req, res, next).execute(image.points.onRequest));
 app.use(errorHandler);
 
 app.listen(3000, () => console.log('App started on port 3000'));

@@ -1,0 +1,91 @@
+import { createCanvas, loadImage, Image, CanvasRenderingContext2D } from 'canvas';
+import express from 'express';
+import { RequestData } from './request';
+import { FormatHelper, ResponseHelper } from '../../common/helper';
+import Color from 'color'
+import * as fs from 'fs';
+import * as path from 'path';
+
+const size = { width: 1000, height: 340 };
+const border: number = 25;
+const radius: number = 20;
+const trophy = fs.readFileSync(path.join(path.join(__dirname, 'templates'), 'trophy.png'));
+
+export const onRequest = async (request: express.Request, response: express.Response) => {
+    const body: RequestData = request.body;
+    const canvas = createCanvas(size.width, size.height);
+    const context = canvas.getContext('2d');
+    const profilePictureBuffer = Buffer.from(body.profilePicture, 'base64');
+    const profilePicture = await loadImage(profilePictureBuffer);
+    const trophyImg = body.position === 1 ? await loadImage(trophy) : null;
+
+    context.globalCompositeOperation = 'source-over';
+    context.antialias = 'subpixel';
+    context.imageSmoothingEnabled = true;
+
+    drawBackground(context, body.backgroundColor, false);
+    drawBackground(context, body.textBackground, true);
+    drawNickname(context, body.nickname, profilePicture);
+    drawPoints(context, body.points, body.position, profilePicture, trophyImg);
+    context.drawImage(profilePicture, border * 2, border * 2);
+
+    const image = canvas.toBuffer();
+    ResponseHelper.writePngResponse(response, image);
+};
+
+const drawBackground = (context: CanvasRenderingContext2D, background: string, isInner: boolean): void => {
+    const pos = isInner ? border : 0;
+    const width = size.width - (isInner ? border * 2 : 0);
+    const height = size.height - (isInner ? border * 2 : 0);
+
+    context.fillStyle = Color(background).hex();
+    context.beginPath();
+    context.roundRect(pos, pos, width, height, radius);
+    context.fill();
+}
+
+const drawNickname = (context: CanvasRenderingContext2D, nickname: string, profilePicture: Image): void => {
+    context.font = '80px Open Sans';
+    context.fillStyle = 'white';
+
+    const textSize = context.measureText(nickname);
+    const xPos = (border * 3) + profilePicture.width;
+    const yPos = textSize.actualBoundingBoxAscent + (border * 2.5);
+    const maxWidth = size.width - (border * 5) - profilePicture.width;
+
+    context.fillText(cutToWidth(nickname, maxWidth, context), xPos, yPos);
+}
+
+const cutToWidth = (text: string, maxWidth: number, context: CanvasRenderingContext2D): string => {
+    let result = '';
+
+    for (let i = 0; i < text.length; i++) {
+        if (context.measureText(result + text[i]).width >= maxWidth) break;
+        result += text[i];
+    }
+
+    return result;
+}
+
+const drawPoints = (context: CanvasRenderingContext2D, points: number, position: number, profilePicture: Image, trophy: Image | null): void => {
+    context.font = '60px Open Sans';
+    context.fillStyle = 'white';
+
+    const text = `${position}. místo\n${formatPoints(points)}`;
+    let xPos = (border * 3) + profilePicture.width;
+
+    if (trophy) {
+        context.drawImage(trophy, xPos, 160);
+        xPos += trophy.width + 10;
+    }
+
+    context.fillText(text, xPos, 205);
+};
+
+const formatPoints = (points: number): string => {
+    const pts = FormatHelper.formatNumber(points);
+
+    if (points === 1) return '1 bod';
+    else if (points > 1 && points < 5) { return `${pts} body`; }
+    else return `${pts} bodů`;
+}
