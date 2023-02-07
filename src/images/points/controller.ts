@@ -38,7 +38,7 @@ const drawBackground = (context: CanvasRenderingContext2D, background: string, i
     const width = size.width - (isInner ? border * 2 : 0);
     const height = size.height - (isInner ? border * 2 : 0);
 
-    context.fillStyle = Color(background).hex();
+    context.fillStyle = Color(background).hexa();
     context.beginPath();
     context.roundRect(pos, pos, width, height, radius);
     context.fill();
