@@ -1,7 +1,7 @@
 import { createCanvas, loadImage, Image, CanvasRenderingContext2D } from 'canvas';
 import express from 'express';
 import { RequestData } from './request';
-import { FormatHelper, ResponseHelper } from '../../common/helper';
+import { CanvasHelper, FormatHelper, ResponseHelper } from '../../common/helper';
 import Color from 'color'
 import * as fs from 'fs';
 import * as path from 'path';
@@ -18,11 +18,8 @@ export const onRequest = async (request: express.Request, response: express.Resp
     const profilePictureBuffer = Buffer.from(body.profilePicture, 'base64');
     const profilePicture = await loadImage(profilePictureBuffer);
     const trophyImg = body.position === 1 ? await loadImage(trophy) : null;
-
-    context.globalCompositeOperation = 'source-over';
-    context.antialias = 'subpixel';
-    context.imageSmoothingEnabled = true;
-
+    
+    CanvasHelper.setAntialias(context);
     drawBackground(context, body.backgroundColor, false);
     drawBackground(context, body.textBackground, true);
     drawNickname(context, body.nickname, profilePicture);

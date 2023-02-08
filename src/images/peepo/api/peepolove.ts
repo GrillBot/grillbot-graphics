@@ -1,4 +1,5 @@
 import { Image, Canvas, CanvasRenderingContext2D, loadImage } from 'canvas';
+import { CanvasHelper } from '../../../common/helper';
 import { PeepoImageBase, readTemplate } from './peepo-base';
 
 const peepoBody = readTemplate('body.png');
@@ -11,8 +12,10 @@ export class PeepoLove extends PeepoImageBase {
     }
 
     protected async renderConcreteFrame(profilePictureFrame: Image, canvas: Canvas, context: CanvasRenderingContext2D): Promise<void> {
+        const circleAvatar = await CanvasHelper.createCircleImage(profilePictureFrame);
+        
         context.drawImage(await loadImage(peepoBody), 0, topOffset);
-        context.drawImage(profilePictureFrame, 5, canvas.height - profilePictureFrame.height - 15);
+        context.drawImage(circleAvatar, 5, canvas.height - profilePictureFrame.height - 15);
         context.drawImage(await loadImage(peepoHands), 0, topOffset);
     }
 }

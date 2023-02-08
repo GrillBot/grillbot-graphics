@@ -1,3 +1,4 @@
+import { CanvasHelper } from './../../common/helper';
 import express from 'express';
 import { createCanvas, loadImage, Image } from 'canvas';
 import * as path from 'path';
@@ -23,9 +24,7 @@ export const onRequest = async (request: express.Request, response: express.Resp
     const profilePictureBuffer = Buffer.from(body.profilePicture, 'base64');
 
     context.font = `${fontSize(body.days)} Open Sans`;
-    context.globalCompositeOperation = 'source-over';
-    context.antialias = 'subpixel';
-    context.imageSmoothingEnabled = true;
+    CanvasHelper.setAntialias(context);
 
     if (!cache.background) { cache.background = await loadImage(background); }
     if (!cache.head) { cache.head = await loadImage(head); }

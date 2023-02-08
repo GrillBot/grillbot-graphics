@@ -1,4 +1,5 @@
 import { Image, Canvas, CanvasRenderingContext2D, loadImage } from "canvas";
+import { CanvasHelper } from "../../../common/helper";
 import { PeepoImageBase, readTemplate } from "./peepo-base";
 
 const peepoAngryImage = readTemplate('peepoangry.png');
@@ -9,7 +10,9 @@ export class PeepoAngry extends PeepoImageBase {
     }
 
     protected async renderConcreteFrame(profilePictureFrame: Image, canvas: Canvas, context: CanvasRenderingContext2D): Promise<void> {
-        context.drawImage(profilePictureFrame, 20, 10);
+        const circleAvatar = await CanvasHelper.createCircleImage(profilePictureFrame);
+
+        context.drawImage(circleAvatar, 20, 10);
         context.drawImage(await loadImage(peepoAngryImage), 115, -5);
     }
 }
