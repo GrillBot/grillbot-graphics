@@ -24,7 +24,7 @@ export const onRequest = async (request: express.Request, response: express.Resp
     drawBackground(context, body.textBackground, true);
     drawNickname(context, body.nickname, profilePicture);
     drawPoints(context, body.points, body.position, profilePicture, trophyImg);
-    context.drawImage(profilePicture, border * 2, border * 2);
+    await drawProfilePicture(context, profilePicture);
 
     const image = canvas.toBuffer();
     ResponseHelper.writePngResponse(response, image);
@@ -85,4 +85,9 @@ const formatPoints = (points: number): string => {
     if (points === 1) return '1 bod';
     else if (points > 1 && points < 5) { return `${pts} body`; }
     else return `${pts} bodů`;
+}
+
+const drawProfilePicture = async (context: CanvasRenderingContext2D, profilePicture: Image): Promise<void> => {
+    const circleAvatar = await CanvasHelper.createCircleImage(profilePicture);
+    context.drawImage(circleAvatar, border * 2, border * 2, 250, 250);
 }
