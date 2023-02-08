@@ -45,7 +45,7 @@ const drawBackground = (context: CanvasRenderingContext2D, background: string, i
 }
 
 const drawNickname = (context: CanvasRenderingContext2D, nickname: string, profilePicture: Image): void => {
-    context.font = '80px Open Sans';
+    context.font = '80px Arial';
     context.fillStyle = 'white';
 
     const textSize = context.measureText(nickname);
@@ -68,7 +68,7 @@ const cutToWidth = (text: string, maxWidth: number, context: CanvasRenderingCont
 }
 
 const drawPoints = (context: CanvasRenderingContext2D, points: number, position: number, profilePicture: Image, trophy: Image | null): void => {
-    context.font = '60px Open Sans';
+    context.font = '60px Arial';
     context.fillStyle = 'white';
 
     const text = `${position}. místo\n${formatPoints(points)}`;
