@@ -25,7 +25,7 @@ export class CanvasHelper {
         const canvas = createCanvas(image.width, image.height);
         const context = canvas.getContext('2d');
 
-        context.antialias = 'subpixel';
+        this.setAntialias(context);
         context.save();
         context.beginPath();
         context.arc(image.width / 2, image.height / 2, image.width / 2, 0, Math.PI * 2, false);
