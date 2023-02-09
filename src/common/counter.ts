@@ -55,13 +55,13 @@ export const durationCounter = (req: express.Request, res: express.Response, nex
 
     res.on('finish', () => {
         const end = process.hrtime(start);
-        const duration = (end[0] * 1e9 + end[1]) / 1e6;
+        const duration = Math.round((end[0] * 1e9 + end[1]) / 1e6);
 
         const endpoint = stats.endpoints.find(o => o.endpoint === req.url);
         if (!endpoint) { return; }
         endpoint.totalTime += duration;
         endpoint.lastTime = duration;
-        endpoint.avgTime = endpoint.totalTime / endpoint.count;
+        endpoint.avgTime = Math.round(endpoint.totalTime / endpoint.count);
     });
 
     next();
