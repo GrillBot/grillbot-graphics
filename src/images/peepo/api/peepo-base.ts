@@ -28,10 +28,10 @@ export abstract class PeepoImageBase {
         CanvasHelper.setAntialias(context);
 
         context.clearRect(0, 0, canvas.width, canvas.height);
-        await this.renderConcreteFrame(profilePictureFrame, canvas, context);
+        await this.renderConcreteFrame(profilePictureFrame, context);
 
         return canvas.toBuffer();
     }
 
-    protected abstract renderConcreteFrame(profilePictureFrame: Image, canvas: Canvas, context: CanvasRenderingContext2D): Promise<void>;
+    protected abstract renderConcreteFrame(profilePictureFrame: Image, context: CanvasRenderingContext2D): Promise<void>;
 }

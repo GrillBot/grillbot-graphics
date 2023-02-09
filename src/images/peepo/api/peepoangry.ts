@@ -9,7 +9,7 @@ export class PeepoAngry extends PeepoImageBase {
         super(avatarFrames, 250, 105);
     }
 
-    protected async renderConcreteFrame(profilePictureFrame: Image, canvas: Canvas, context: CanvasRenderingContext2D): Promise<void> {
+    protected async renderConcreteFrame(profilePictureFrame: Image, context: CanvasRenderingContext2D): Promise<void> {
         const circleAvatar = await CanvasHelper.createCircleImage(profilePictureFrame);
 
         context.drawImage(circleAvatar, 20, 10);

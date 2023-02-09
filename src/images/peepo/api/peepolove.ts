@@ -11,11 +11,11 @@ export class PeepoLove extends PeepoImageBase {
         super(avatarFrames, 512, 397);
     }
 
-    protected async renderConcreteFrame(profilePictureFrame: Image, canvas: Canvas, context: CanvasRenderingContext2D): Promise<void> {
+    protected async renderConcreteFrame(profilePictureFrame: Image, context: CanvasRenderingContext2D): Promise<void> {
         const circleAvatar = await CanvasHelper.createCircleImage(profilePictureFrame);
         
         context.drawImage(await loadImage(peepoBody), 0, topOffset);
-        context.drawImage(circleAvatar, 5, canvas.height - profilePictureFrame.height - 15);
+        context.drawImage(circleAvatar, 5, 200, 180, 180);
         context.drawImage(await loadImage(peepoHands), 0, topOffset);
     }
 }
