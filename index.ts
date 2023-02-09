@@ -11,6 +11,7 @@ app.use(express.json({ limit: '100mb' }))
 app.use(loggerMiddleware);
 app.use(actuator({}));
 app.use(common.requestsCounter);
+app.use(common.durationCounter);
 
 app.post('/chart', common.validate(chart.validators), (req, res, next) => new common.RequestProcessing(req, res, next).execute(chart.onRequest));
 app.get('/stats', common.statsEndpoint);

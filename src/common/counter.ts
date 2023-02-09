@@ -4,6 +4,9 @@ interface RequestStatistics {
     endpoint: string;
     count: number;
     lastRequestAt: string;
+    totalTime: number;
+    avgTime: number;
+    lastTime: number;
 }
 
 interface Stats {
@@ -30,7 +33,10 @@ export const requestsCounter = (request: express.Request, response: express.Resp
         stats.endpoints.push({
             count: 1,
             lastRequestAt: new Date().toISOString(),
-            endpoint: request.url
+            endpoint: request.url,
+            totalTime: 0,
+            avgTime: 0,
+            lastTime: 0
         });
     } else {
         endpoint.count++;
@@ -42,4 +48,21 @@ export const requestsCounter = (request: express.Request, response: express.Resp
 
 export const statsEndpoint = (request: express.Request, response: express.Response): void => {
     response.status(200).json(stats);
+};
+
+export const durationCounter = (req: express.Request, res: express.Response, next: express.NextFunction) => {
+    const start = process.hrtime();
+
+    res.on('finish', () => {
+        const end = process.hrtime(start);
+        const duration = (end[0] * 1e9 + end[1]) / 1e6;
+
+        const endpoint = stats.endpoints.find(o => o.endpoint === req.url);
+        if (!endpoint) { return; }
+        endpoint.totalTime += duration;
+        endpoint.lastTime = duration;
+        endpoint.avgTime = endpoint.totalTime / endpoint.count;
+    });
+
+    next();
 };
