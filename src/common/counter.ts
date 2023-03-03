@@ -28,12 +28,13 @@ export const requestsCounter = (request: express.Request, response: express.Resp
         stats.measuredFrom = new Date().toISOString();
     }
 
-    const endpoint = stats.endpoints.find(o => o.endpoint === request.url);
+    const url = `${request.method} ${request.url}`;
+    const endpoint = stats.endpoints.find(o => o.endpoint === url);
     if (!endpoint) {
         stats.endpoints.push({
             count: 1,
             lastRequestAt: new Date().toISOString(),
-            endpoint: request.url,
+            endpoint: url,
             totalTime: 0,
             avgTime: 0,
             lastTime: 0
@@ -57,7 +58,7 @@ export const durationCounter = (req: express.Request, res: express.Response, nex
         const end = process.hrtime(start);
         const duration = Math.round((end[0] * 1e9 + end[1]) / 1e6);
 
-        const endpoint = stats.endpoints.find(o => o.endpoint === req.url);
+        const endpoint = stats.endpoints.find(o => o.endpoint === `${req.method} ${req.url}`);
         if (!endpoint) { return; }
         endpoint.totalTime += duration;
         endpoint.lastTime = duration;
