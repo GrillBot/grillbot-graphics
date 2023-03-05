@@ -28,7 +28,7 @@ jobs:
         shell: bash
         run: |
           sudo docker build -t graphics-test-image -f ./Dockerfile .
-          sudo docker rmi $(docker images "{{.Repository}}:{{.Tag}}" | grep 'graphics-test-image')
+          sudo docker rmi $(docker images --format "{{.Repository}}:{{.Tag}}" | grep 'graphics-test-image')
   BuildContainer:
     runs-on: ubuntu-latest
     needs: [CheckStaticContent, Build]
