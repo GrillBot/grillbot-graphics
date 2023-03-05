@@ -32,7 +32,7 @@ jobs:
   BuildContainer:
     runs-on: ubuntu-latest
     needs: [CheckStaticContent, Build]
-    if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/main'
     permissions:
       contents: read
       packages: write
@@ -55,7 +55,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: 'Production'
     needs: BuildContainer
-    if: github.ref == 'refs/head/master'
+    if: github.ref == 'refs/head/main'
     steps:
       - name: Execute deployment on SSH
         uses: appleboy/ssh-action@v0.1.8
