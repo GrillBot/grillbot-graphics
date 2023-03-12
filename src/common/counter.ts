@@ -49,7 +49,7 @@ export const requestsCounter = (request: express.Request, response: express.Resp
     }
 
     const cpuUsage = process.cpuUsage();
-    stats.cpuTime = (cpuUsage.system + cpuUsage.user) / 1000;
+    stats.cpuTime = Math.round((cpuUsage.system + cpuUsage.user) / 1000);
 
     next();
 };
