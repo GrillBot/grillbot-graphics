@@ -13,12 +13,16 @@ interface Stats {
     requestsCount: number;
     measuredFrom: string | null;
     endpoints: RequestStatistics[];
+    cpuTime: number;
+    database: null
 }
 
 const stats: Stats = {
     requestsCount: 0,
     measuredFrom: null,
-    endpoints: []
+    endpoints: [],
+    cpuTime: 0,
+    database: null
 };
 
 export const requestsCounter = (request: express.Request, response: express.Response, next: express.NextFunction): void => {
@@ -43,6 +47,9 @@ export const requestsCounter = (request: express.Request, response: express.Resp
         endpoint.count++;
         endpoint.lastRequestAt = new Date().toISOString();
     }
+
+    const cpuUsage = process.cpuUsage();
+    stats.cpuTime = (cpuUsage.system + cpuUsage.user) / 1000;
 
     next();
 };
